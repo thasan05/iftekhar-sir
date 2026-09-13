@@ -21,7 +21,7 @@ export const defaultContent: Content = {
   meta: {
     title: "Iftekhar Mahmud — Lecturer in English, AIUB",
     description:
-      "Iftekhar Mahmud is a Lecturer in the Department of English at American International University-Bangladesh. MEd TESOL (University of Dundee). Teaching academic writing and reading; researching language testing and technology in language education.",
+      "I am a Lecturer in the Department of English at American International University-Bangladesh. MEd TESOL (University of Dundee). I teach academic writing and reading; I research language testing and technology in language education.",
     keywords: [
       "Iftekhar Mahmud",
       "AIUB English",
@@ -44,7 +44,7 @@ export const defaultContent: Content = {
     taglineTail: ", and what technology changes about the way it is learned.",
     portrait: {
       src: "/headshot.webp",
-      alt: "Iftekhar Mahmud, Lecturer in the Department of English at American International University-Bangladesh",
+      alt: "Portrait of Iftekhar Mahmud, Lecturer in the Department of English at American International University-Bangladesh",
     },
     primaryCta: { label: "Get in touch", href: "#contact" },
     secondaryCta: { label: "Research & writing", href: "#research" },
@@ -52,12 +52,12 @@ export const defaultContent: Content = {
 
   about: {
     paragraphs: [
-      "Iftekhar Mahmud is a TESOL specialist who has taught in the Department of English at American International University-Bangladesh since 2023, where he coordinates the university's Academic Writing course and teaches across its EAP, ESP and ELT offerings.",
-      "Before joining AIUB he prepared candidates for the IELTS at Eduko Pathways and, earlier, at Liakat's — work that left him with a durable interest in how language ability is actually measured rather than merely described.",
-      "His research now sits where language testing meets educational technology: how assessment can be made fairer and more informative, and how tools such as NLP applications support the speaking and writing development of EFL learners.",
+      "I am a TESOL specialist, and I have taught in the Department of English at American International University-Bangladesh since 2023. I coordinate the university's Academic Writing course and teach across its EAP, ESP and ELT offerings.",
+      "Before joining AIUB, I prepared candidates for the IELTS at Eduko Pathways and, earlier, at Liakat's — work that left me with a durable interest in how language ability is actually measured rather than merely described.",
+      "My research now sits where language testing meets educational technology: how assessment can be made fairer and more informative, and how tools such as NLP applications support the speaking and writing development of EFL learners.",
     ],
     humanNote:
-      "Outside the department he photographs, watches a great deal of film, and travels whenever the semester lets him.",
+      "Outside the department I photograph, watch a great deal of film, and travel whenever the semester lets me.",
   },
 
   experience: [
@@ -72,13 +72,13 @@ export const defaultContent: Content = {
       endDate: "",
       current: true,
       summary:
-        "Teaches and coordinates undergraduate English courses in the Department of English, with responsibility for the university-wide Academic Writing curriculum.",
+        "I teach and coordinate undergraduate English courses in the Department of English, with responsibility for the university-wide Academic Writing curriculum.",
       highlights: [
-        "Course coordinator for Academic Writing and course moderator for Academic Reading, setting shared syllabi, question papers and marking standards across sections.",
-        "Teaches undergraduate EAP, ESP and ELT courses, developing lecture material, tasks and reading packs from scratch.",
-        "Designs, administers and grades assessments, and reviews grading across sections for consistency.",
-        "Mentors student research projects and conference-style presentations, from question framing to delivery.",
-        "Helps organise departmental conferences, workshops and inter-university competitions.",
+        "I coordinate Academic Writing and moderate Academic Reading, setting shared syllabi, question papers and marking standards across sections.",
+        "I teach undergraduate EAP, ESP and ELT courses, developing lecture material, tasks and reading packs from scratch.",
+        "I design, administer and grade assessments, and review grading across sections for consistency.",
+        "I mentor student research projects and conference-style presentations, from question framing to delivery.",
+        "I help organise departmental conferences, workshops and inter-university competitions.",
       ],
     },
     {
@@ -92,10 +92,10 @@ export const defaultContent: Content = {
       endDate: "2022-02-28",
       current: false,
       summary:
-        "Taught full-course IELTS preparation and built the centre's practice material.",
+        "I taught full-course IELTS preparation and built the centre's practice material.",
       highlights: [
-        "Designed course material and practice tasks covering listening, reading, writing and speaking.",
-        "Ran and marked full mock tests across all four skills, with individual feedback on band-score gaps.",
+        "I designed course material and practice tasks covering listening, reading, writing and speaking.",
+        "I ran and marked full mock tests across all four skills, with individual feedback on band-score gaps.",
       ],
     },
     {
@@ -109,10 +109,10 @@ export const defaultContent: Content = {
       endDate: "2019-01-31",
       current: false,
       summary:
-        "Taught IELTS preparation classes alongside one-to-one candidate coaching.",
+        "I taught IELTS preparation classes alongside one-to-one candidate coaching.",
       highlights: [
-        "Delivered group preparation classes on test strategy and language accuracy.",
-        "Held one-on-one consultations to diagnose individual weaknesses and set study plans.",
+        "I delivered group preparation classes on test strategy and language accuracy.",
+        "I held one-on-one consultations to diagnose individual weaknesses and set study plans.",
       ],
     },
   ],
@@ -210,7 +210,7 @@ export const defaultContent: Content = {
       id: "conference-debate",
       title: "Conference & Debate Service",
       blurb:
-        "Organising sessions, reviewing papers and judging argument — inside the department and across universities.",
+        "I organise sessions, review papers and judge argument — inside the department and across universities.",
       range: "",
       items: [
         {
@@ -239,7 +239,7 @@ export const defaultContent: Content = {
       id: "continuing-development",
       title: "Continuing Development",
       blurb:
-        "Workshops and certification keeping the teaching and the research current.",
+        "I keep my teaching and research current through workshops and certification.",
       range: "2021–2025",
       items: [
         {
@@ -305,7 +305,7 @@ export const defaultContent: Content = {
   contact: {
     heading: "Get in touch",
     invitation:
-      "Open to research collaboration, conference invitations and student supervision enquiries. Students in his courses are welcome during posted office hours.",
+      "I am open to research collaboration, conference invitations and student supervision enquiries. Students in my courses are welcome during posted office hours.",
     email: { label: "Email", href: "iftekhar@aiub.edu", note: "" },
     cv: {
       label: "Download CV",

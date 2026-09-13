@@ -102,7 +102,7 @@ export function Hero({ hero, identity }: HeroProps) {
               fill
               priority
               sizes="(min-width: 1024px) 19rem, (min-width: 640px) 14rem, 13rem"
-              className="rounded-full object-cover"
+              className="rounded-full object-cover object-top sm:object-center"
             />
             <span
               aria-hidden="true"
