@@ -1,5 +1,11 @@
 import type { Content } from "@/lib/schema";
 
+function canonicalSiteUrl(siteUrl: string): string {
+  return siteUrl === "https://iftekhar-mahmud.vercel.app"
+    ? "https://iftekharmahmud.vercel.app"
+    : siteUrl;
+}
+
 /**
  * JSON-LD `Person` graph, derived from the same document the page renders, so
  * the structured data cannot drift from what a reader sees.
@@ -7,6 +13,7 @@ import type { Content } from "@/lib/schema";
 export function personJsonLd(content: Content) {
   const { identity, meta, hero, education, research, honors, contact, socials, experience } =
     content;
+  const siteUrl = canonicalSiteUrl(meta.siteUrl);
   const current = experience.find((entry) => entry.current);
 
   return {
@@ -15,10 +22,10 @@ export function personJsonLd(content: Content) {
     name: identity.name,
     jobTitle: `${identity.title}, ${identity.department}`,
     description: meta.description,
-    url: meta.siteUrl,
+    url: siteUrl,
     image: hero.portrait.src.startsWith("http")
       ? hero.portrait.src
-      : `${meta.siteUrl}${hero.portrait.src}`,
+      : `${siteUrl}${hero.portrait.src}`,
     worksFor: {
       "@type": "CollegeOrUniversity",
       name: current?.organization ?? identity.institution,

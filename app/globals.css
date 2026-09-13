@@ -71,12 +71,15 @@
   html {
     -webkit-text-size-adjust: 100%;
     overflow-x: hidden;
+    scrollbar-gutter: stable;
     scroll-padding-top: 5.5rem;
   }
 
   body {
     @apply bg-paper text-ink font-sans text-body antialiased;
+    min-width: 0;
     overflow-x: hidden;
+    overflow-wrap: anywhere;
   }
 
   h1,
@@ -156,7 +159,7 @@
 
   @media (max-width: 639px) {
     .paper-grain::after {
-      opacity: 0.35;
+      opacity: 0;
     }
   }
 }

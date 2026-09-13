@@ -34,7 +34,7 @@ export const defaultContent: Content = {
       "technology in language education",
       "Dhaka",
     ],
-    siteUrl: "https://iftekhar-mahmud.vercel.app",
+    siteUrl: "https://iftekharmahmud.vercel.app",
   },
 
   hero: {
@@ -310,7 +310,7 @@ export const defaultContent: Content = {
     cv: {
       label: "Download CV",
       href: "",
-      note: "[CV — upload the public-ready PDF in the admin panel under Contact]",
+      note: "CV available on request.",
     },
     referencesLine: "References available on request.",
   },
