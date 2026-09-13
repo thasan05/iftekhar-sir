@@ -96,14 +96,16 @@ export function Hero({ hero, identity }: HeroProps) {
               "relative mx-auto order-1 mt-0 aspect-square w-52 shrink-0 sm:w-56 lg:order-2 lg:mx-0 lg:mt-0 lg:w-full lg:max-w-[19rem] lg:justify-self-end",
             )}
           >
-            <Image
-              src={hero.portrait.src}
-              alt={hero.portrait.alt}
-              fill
-              priority
-              sizes="(min-width: 1024px) 19rem, (min-width: 640px) 14rem, 13rem"
-              className="rounded-full object-contain sm:object-cover sm:object-center"
-            />
+            <div className="absolute inset-3 sm:inset-0">
+              <Image
+                src={hero.portrait.src}
+                alt={hero.portrait.alt}
+                fill
+                priority
+                sizes="(min-width: 1024px) 19rem, (min-width: 640px) 14rem, 11.5rem"
+                className="rounded-full object-contain sm:object-cover sm:object-center"
+              />
+            </div>
             <span
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-ink/15"
