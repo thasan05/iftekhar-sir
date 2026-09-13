@@ -31,7 +31,7 @@ export function Hero({ hero, identity }: HeroProps) {
     <section id="top" className="pt-8 pb-16 sm:pt-12 sm:pb-section lg:pt-14">
       <div className="mx-auto w-full max-w-shell px-5 sm:px-8 lg:px-10">
         <div className="flex flex-col gap-10 sm:gap-12 lg:grid lg:grid-cols-[minmax(0,1.45fr)_minmax(0,0.55fr)] lg:items-center lg:gap-16">
-          <div className="min-w-0">
+          <div className="min-w-0 order-2 lg:order-1">
             {hero.eyebrow.length > 0 ? (
               <motion.p
                 {...enter(
@@ -93,7 +93,7 @@ export function Hero({ hero, identity }: HeroProps) {
           <motion.div
             {...enter(
               2,
-              "relative mx-auto mt-1 aspect-square w-40 shrink-0 sm:w-44 lg:mx-0 lg:mt-0 lg:w-full lg:max-w-[19rem] lg:justify-self-end",
+              "relative mx-auto order-1 mt-0 aspect-square w-52 shrink-0 sm:w-56 lg:order-2 lg:mx-0 lg:mt-0 lg:w-full lg:max-w-[19rem] lg:justify-self-end",
             )}
           >
             <Image
@@ -101,7 +101,7 @@ export function Hero({ hero, identity }: HeroProps) {
               alt={hero.portrait.alt}
               fill
               priority
-              sizes="(min-width: 1024px) 19rem, (min-width: 640px) 11rem, 10rem"
+              sizes="(min-width: 1024px) 19rem, (min-width: 640px) 14rem, 13rem"
               className="rounded-full object-cover"
             />
             <span
