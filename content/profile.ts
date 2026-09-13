@@ -386,7 +386,7 @@ export const defaultContent: Content = {
       id: "skills",
       enabled: true,
       label: "Skills",
-      title: "What he works with",
+      title: "What I work with",
       lede: "",
       tone: "raised",
     },
