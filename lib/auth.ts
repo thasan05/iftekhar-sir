@@ -10,28 +10,11 @@ import {
   verifySessionToken,
 } from "@/lib/session";
 
-/**
- * Password handling and login throttling.
- *
- * PBKDF2-HMAC-SHA256 through Web Crypto: no native dependency to compile, and
- * the same primitive is available in every runtime this app might land in.
- */
-
-const PBKDF2_ITERATIONS = 600_000; // OWASP guidance for PBKDF2-HMAC-SHA256
+const PBKDF2_ITERATIONS = 600_000;
 const KEY_LENGTH_BITS = 256;
 const SALT_BYTES = 16;
-
 const encoder = new TextEncoder();
 
-/**
- * base64url, and the stored hash is joined with dots rather than "$".
- *
- * This is not cosmetic. The value lives in an environment variable, and dotenv
- * — including the loader Next uses — expands `$NAME` references inside values.
- * A "$"-separated hash silently loses every segment after the first, so
- * verification can never succeed. Dots and base64url survive .env files, shells
- * and URLs untouched.
- */
 function toBase64Url(bytes: Uint8Array): string {
   let binary = "";
   for (const byte of bytes) binary += String.fromCharCode(byte);
@@ -53,18 +36,8 @@ function constantTimeEqual(a: Uint8Array, b: Uint8Array): boolean {
   return diff === 0;
 }
 
-async function derive(
-  password: string,
-  salt: Uint8Array,
-  iterations: number,
-): Promise<Uint8Array> {
-  const key = await crypto.subtle.importKey(
-    "raw",
-    encoder.encode(password),
-    "PBKDF2",
-    false,
-    ["deriveBits"],
-  );
+async function derive(password: string, salt: Uint8Array, iterations: number): Promise<Uint8Array> {
+  const key = await crypto.subtle.importKey("raw", encoder.encode(password), "PBKDF2", false, ["deriveBits"]);
   const bits = await crypto.subtle.deriveBits(
     { name: "PBKDF2", salt: salt as BufferSource, iterations, hash: "SHA-256" },
     key,
@@ -73,7 +46,6 @@ async function derive(
   return new Uint8Array(bits);
 }
 
-/** Produce the value stored in ADMIN_PASSWORD_HASH. */
 export async function hashPassword(password: string): Promise<string> {
   const salt = crypto.getRandomValues(new Uint8Array(SALT_BYTES));
   const hash = await derive(password, salt, PBKDF2_ITERATIONS);
@@ -82,10 +54,7 @@ export async function hashPassword(password: string): Promise<string> {
 
 export async function verifyPassword(password: string, stored: string): Promise<boolean> {
   const plainPassword = process.env.ADMIN_PASSWORD;
-
-  if (plainPassword) {
-    return password === plainPassword;
-  }
+  if (plainPassword) return password === plainPassword;
 
   const parts = stored.split(".");
   if (parts.length !== 5 || parts[0] !== "pbkdf2" || parts[1] !== "sha256") return false;
@@ -104,12 +73,8 @@ export async function verifyPassword(password: string, stored: string): Promise<
 }
 
 export function adminPasswordConfigured(): boolean {
-  return Boolean(process.env.ADMIN_PASSWORD_HASH?.trim());
+  return Boolean(process.env.ADMIN_PASSWORD_HASH?.trim() || process.env.ADMIN_PASSWORD?.trim());
 }
-
-// ---------------------------------------------------------------------------
-// Throttling
-// ---------------------------------------------------------------------------
 
 const MAX_FAILURES = 6;
 const LOCKOUT_MINUTES = 15;
@@ -126,10 +91,7 @@ export async function lockState(ip: string): Promise<LockState> {
   );
   const until = row?.locked_until ? new Date(row.locked_until).getTime() : 0;
   const remaining = until - Date.now();
-  return {
-    locked: remaining > 0,
-    retryAfterSeconds: remaining > 0 ? Math.ceil(remaining / 1000) : 0,
-  };
+  return { locked: remaining > 0, retryAfterSeconds: remaining > 0 ? Math.ceil(remaining / 1000) : 0 };
 }
 
 export async function recordFailure(ip: string): Promise<LockState> {
@@ -149,9 +111,7 @@ export async function recordFailure(ip: string): Promise<LockState> {
   );
 
   const failures = rows[0]?.failures ?? 1;
-  if (failures >= MAX_FAILURES) {
-    return { locked: true, retryAfterSeconds: LOCKOUT_MINUTES * 60 };
-  }
+  if (failures >= MAX_FAILURES) return { locked: true, retryAfterSeconds: LOCKOUT_MINUTES * 60 };
   return { locked: false, retryAfterSeconds: 0 };
 }
 
@@ -160,10 +120,6 @@ export async function clearFailures(ip: string): Promise<void> {
 }
 
 export const remainingAttempts = MAX_FAILURES;
-
-// ---------------------------------------------------------------------------
-// Session lifecycle
-// ---------------------------------------------------------------------------
 
 export async function startSession(): Promise<void> {
   const token = await createSessionToken();
@@ -187,11 +143,6 @@ export async function getSession(): Promise<{ sub: string } | null> {
   return verifySessionToken(jar.get(SESSION_COOKIE)?.value);
 }
 
-/**
- * Guard for every admin server action. Middleware already blocks unauthenticated
- * navigation, but actions are separate POST endpoints and must check for
- * themselves rather than trust the route they appear to belong to.
- */
 export async function requireSession(): Promise<{ sub: string }> {
   const session = await getSession();
   if (!session) redirect("/admin/login");
