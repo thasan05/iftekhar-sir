@@ -5,24 +5,35 @@ import { fontVariables } from "@/lib/fonts";
 import { themeCss } from "@/lib/theme";
 import "./globals.css";
 
+function canonicalSiteUrl(siteUrl: string): string {
+  // Keep the public canonical origin aligned with the current Vercel alias while
+  // allowing future CMS-managed domains to pass through unchanged.
+  return siteUrl === "https://iftekhar-mahmud.vercel.app"
+    ? "https://iftekharmahmud.vercel.app"
+    : siteUrl;
+}
+
 export async function generateMetadata(): Promise<Metadata> {
   const { content } = await loadContent();
   const { meta, identity } = content;
+  const siteUrl = canonicalSiteUrl(meta.siteUrl);
   const [firstName, ...rest] = identity.name.split(" ");
 
   return {
-    metadataBase: new URL(meta.siteUrl),
+    metadataBase: new URL(siteUrl),
     title: {
       default: meta.title,
       template: `%s — ${identity.name}`,
     },
     description: meta.description,
     keywords: meta.keywords,
-    authors: [{ name: identity.name, url: meta.siteUrl }],
+    authors: [{ name: identity.name, url: siteUrl }],
     creator: identity.name,
     applicationName: identity.name,
     category: "education",
     alternates: { canonical: "/" },
+    formatDetection: { telephone: false, email: false, address: false },
+    referrer: "strict-origin-when-cross-origin",
     openGraph: {
       type: "profile",
       firstName,
@@ -30,7 +41,7 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: identity.name,
       title: meta.title,
       description: meta.description,
-      url: meta.siteUrl,
+      url: siteUrl,
       locale: "en_GB",
     },
     twitter: {
