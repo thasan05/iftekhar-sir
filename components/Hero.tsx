@@ -28,7 +28,7 @@ export function Hero({ hero, identity }: HeroProps) {
   });
 
   return (
-    <section id="top" className="pt-24 pb-16 sm:pt-32 sm:pb-section lg:pt-40">
+    <section id="top" className="pt-12 pb-16 sm:pt-16 sm:pb-section lg:pt-20">
       <div className="mx-auto w-full max-w-shell px-5 sm:px-8 lg:px-10">
         <div className="grid items-center gap-10 sm:gap-12 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,0.55fr)] lg:gap-16">
           <div className="min-w-0">
