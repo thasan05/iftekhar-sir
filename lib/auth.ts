@@ -2,7 +2,6 @@ import "server-only";
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { query, queryOne } from "@/lib/db";
 import {
   SESSION_COOKIE,
   SESSION_TTL_SECONDS,
@@ -79,44 +78,60 @@ export function adminPasswordConfigured(): boolean {
 const MAX_FAILURES = 6;
 const LOCKOUT_MINUTES = 15;
 
+interface FailureState {
+  failures: number;
+  lockedUntil: number;
+}
+
+// Login throttling deliberately stays in memory. The previous implementation
+// used PGlite as a local fallback, but Vercel's serverless filesystem is not a
+// persistent database and cannot create the application's .data directory.
+// A production deployment with DATABASE_URL can later move this state to the
+// database without changing the login flow.
+const failureStates = new Map<string, FailureState>();
+
+function getFailureState(ip: string): FailureState {
+  return failureStates.get(ip) ?? { failures: 0, lockedUntil: 0 };
+}
+
 export interface LockState {
   locked: boolean;
   retryAfterSeconds: number;
 }
 
 export async function lockState(ip: string): Promise<LockState> {
-  const row = await queryOne<{ locked_until: Date | null }>(
-    "select locked_until from login_attempts where ip = $1",
-    [ip],
-  );
-  const until = row?.locked_until ? new Date(row.locked_until).getTime() : 0;
-  const remaining = until - Date.now();
-  return { locked: remaining > 0, retryAfterSeconds: remaining > 0 ? Math.ceil(remaining / 1000) : 0 };
+  const state = getFailureState(ip);
+  const remaining = state.lockedUntil - Date.now();
+  if (remaining <= 0 && state.lockedUntil !== 0) {
+    failureStates.delete(ip);
+    return { locked: false, retryAfterSeconds: 0 };
+  }
+  return {
+    locked: remaining > 0,
+    retryAfterSeconds: remaining > 0 ? Math.ceil(remaining / 1000) : 0,
+  };
 }
 
 export async function recordFailure(ip: string): Promise<LockState> {
-  const rows = await query<{ failures: number }>(
-    `insert into login_attempts (ip, failures, updated_at)
-       values ($1, 1, now())
-     on conflict (ip) do update
-       set failures = login_attempts.failures + 1,
-           updated_at = now(),
-           locked_until = case
-             when login_attempts.failures + 1 >= $2
-             then now() + ($3 || ' minutes')::interval
-             else login_attempts.locked_until
-           end
-     returning failures`,
-    [ip, MAX_FAILURES, String(LOCKOUT_MINUTES)],
-  );
+  const current = getFailureState(ip);
+  const failures = current.failures + 1;
+  const lockedUntil =
+    failures >= MAX_FAILURES ? Date.now() + LOCKOUT_MINUTES * 60 * 1000 : 0;
 
-  const failures = rows[0]?.failures ?? 1;
-  if (failures >= MAX_FAILURES) return { locked: true, retryAfterSeconds: LOCKOUT_MINUTES * 60 };
+  failureStates.set(ip, { failures, lockedUntil });
+
+  if (lockedUntil > Date.now()) {
+    return {
+      locked: true,
+      retryAfterSeconds: LOCKOUT_MINUTES * 60,
+    };
+  }
+
   return { locked: false, retryAfterSeconds: 0 };
 }
 
 export async function clearFailures(ip: string): Promise<void> {
-  await query("delete from login_attempts where ip = $1", [ip]);
+  failureStates.delete(ip);
 }
 
 export const remainingAttempts = MAX_FAILURES;
