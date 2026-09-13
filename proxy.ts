@@ -8,12 +8,14 @@ import { SESSION_COOKIE, verifySessionToken } from "@/lib/session";
 export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
-  const session = await verifySessionToken(request.cookies.get(SESSION_COOKIE)?.value);
-
+  // The login page must always be reachable. In particular, do not attempt to
+  // verify a session (and therefore do not require SESSION_SECRET) before the
+  // login page has a chance to render.
   if (pathname === "/admin/login") {
-    if (session) return NextResponse.redirect(new URL("/admin", request.url));
     return NextResponse.next();
   }
+
+  const session = await verifySessionToken(request.cookies.get(SESSION_COOKIE)?.value);
 
   if (!session) {
     const login = new URL("/admin/login", request.url);
