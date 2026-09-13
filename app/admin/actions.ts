@@ -160,12 +160,12 @@ export async function loginAction(
   _previous: LoginState,
   formData: FormData,
 ): Promise<LoginState> {
-  const stored = process.env.ADMIN_PASSWORD_HASH?.trim();
+  const stored = process.env.ADMIN_PASSWORD_HASH?.trim() || process.env.ADMIN_PASSWORD?.trim() || "";
 
-  if (!adminPasswordConfigured() || !stored) {
+  if (!adminPasswordConfigured()) {
     return {
       error:
-        "No admin password is set. Run `npm run admin:password` and put the printed value in .env.local as ADMIN_PASSWORD_HASH.",
+        "No admin password is set. Add ADMIN_PASSWORD in Vercel Environment Variables and redeploy.",
     };
   }
 
