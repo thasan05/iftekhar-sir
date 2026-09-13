@@ -132,17 +132,17 @@ const firstPersonReplacements: ReadonlyArray<readonly [string, string]> = [
   ],
 ];
 
-function normalizeFirstPerson<T>(value: T): T {
+function normalizeFirstPerson(value: unknown): unknown {
   if (typeof value === "string") {
     let result = value;
     for (const [from, to] of firstPersonReplacements) {
       result = result.replaceAll(from, to);
     }
-    return result as T;
+    return result;
   }
 
   if (Array.isArray(value)) {
-    return value.map((item) => normalizeFirstPerson(item)) as T;
+    return value.map((item) => normalizeFirstPerson(item));
   }
 
   if (isPlainObject(value)) {
@@ -150,10 +150,10 @@ function normalizeFirstPerson<T>(value: T): T {
     for (const [key, item] of Object.entries(value)) {
       out[key] = normalizeFirstPerson(item);
     }
-    return out as T;
+    return out;
   }
 
-  return value as T;
+  return value;
 }
 
 function parseJsonColumn(value: unknown): unknown {
