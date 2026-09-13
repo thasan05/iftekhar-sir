@@ -53,7 +53,10 @@ export function Hero({ hero, identity }: HeroProps) {
             ) : null}
 
             <motion.h1
-              {...enter(1, "mt-5 max-w-[12ch] text-[clamp(2.5rem,13vw,4.75rem)] sm:mt-6")}
+              {...enter(
+                1,
+                "mt-5 max-w-[12ch] text-[clamp(2.5rem,13vw,4.75rem)] leading-[0.9] sm:mt-6 sm:leading-normal",
+              )}
             >
               {identity.name}
             </motion.h1>
@@ -93,7 +96,7 @@ export function Hero({ hero, identity }: HeroProps) {
           <motion.div
             {...enter(
               2,
-              "relative mx-auto order-1 mt-0 aspect-square w-52 shrink-0 sm:w-56 lg:order-2 lg:mx-0 lg:mt-0 lg:w-full lg:max-w-[19rem] lg:justify-self-end",
+              "relative mx-auto order-1 mt-10 aspect-square w-52 shrink-0 sm:mt-0 sm:w-56 lg:order-2 lg:mx-0 lg:mt-0 lg:w-full lg:max-w-[19rem] lg:justify-self-end",
             )}
           >
             <div className="absolute inset-3 sm:inset-0">
