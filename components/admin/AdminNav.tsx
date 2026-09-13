@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 
 interface NavItem {
@@ -11,10 +11,7 @@ interface NavItem {
 }
 
 const GROUPS: Array<{ heading: string; items: NavItem[] }> = [
-  {
-    heading: "Overview",
-    items: [{ href: "/admin", label: "Dashboard" }],
-  },
+  { heading: "Overview", items: [{ href: "/admin", label: "Dashboard" }] },
   {
     heading: "Content",
     items: [
@@ -58,23 +55,23 @@ export function AdminNav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
   const linkClass = (href: string) => {
     const active = pathname === href;
     return [
-      "block rounded-sheet px-3 py-2 text-small transition-colors duration-150",
-      active
-        ? "bg-ink text-paper"
-        : "text-ink-soft hover:bg-ink/5 hover:text-ink",
+      "flex min-h-11 items-center rounded-sheet px-3 py-2 text-small transition-colors duration-150",
+      active ? "bg-ink text-paper" : "text-ink-soft hover:bg-ink/5 hover:text-ink",
     ].join(" ");
   };
 
   const tree = (
-    <div className="space-y-7">
+    <div className="space-y-6">
       {GROUPS.map((group) => (
         <div key={group.heading}>
-          <p className="mb-2 px-3 font-mono text-label uppercase text-ink-soft/80">
-            {group.heading}
-          </p>
+          <p className="mb-2 px-3 font-mono text-label uppercase text-ink-soft/80">{group.heading}</p>
           <ul className="space-y-0.5">
             {group.items.map((item) => (
               <li key={item.href}>
@@ -102,12 +99,17 @@ export function AdminNav() {
           onClick={() => setOpen((value) => !value)}
           aria-expanded={open}
           aria-controls="admin-nav"
-          className="inline-flex items-center gap-2 rounded-sheet border border-ink/20 px-3 py-2 font-mono text-micro uppercase tracking-[0.14em] text-ink-soft"
+          className="inline-flex min-h-11 items-center gap-2 rounded-sheet border border-ink/20 px-3.5 py-2 font-mono text-micro uppercase tracking-[0.14em] text-ink-soft"
         >
           {open ? <X size={15} aria-hidden="true" /> : <Menu size={15} aria-hidden="true" />}
-          Sections
+          {open ? "Close" : "Sections"}
         </button>
-        <nav id="admin-nav" aria-label="Admin" hidden={!open} className="mt-5">
+        <nav
+          id="admin-nav"
+          aria-label="Admin"
+          hidden={!open}
+          className="mt-4 max-h-[60dvh] overflow-y-auto overscroll-contain rounded-sheet border border-ink/10 bg-paper-raised p-3 shadow-card"
+        >
           {tree}
         </nav>
       </div>

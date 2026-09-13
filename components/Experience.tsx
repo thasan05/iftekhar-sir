@@ -15,7 +15,7 @@ export function Experience({ section, index, entries }: ExperienceProps) {
         {entries.map((entry, position) => (
           <li
             key={entry.id}
-            className="relative border-l border-ink/15 pb-14 pl-7 last:pb-0 sm:pl-9"
+            className="relative border-l border-ink/15 pb-12 pl-6 last:pb-0 sm:pb-14 sm:pl-9"
           >
             <span
               aria-hidden="true"
@@ -28,9 +28,9 @@ export function Experience({ section, index, entries }: ExperienceProps) {
             />
 
             <Reveal delay={position * 0.05}>
-              <div className="grid gap-x-8 gap-y-4 md:grid-cols-[10rem_minmax(0,1fr)]">
+              <div className="grid gap-x-8 gap-y-3 md:grid-cols-[10rem_minmax(0,1fr)] md:gap-y-4">
                 <p className="font-mono text-label uppercase text-ink-soft md:pt-[0.3rem]">
-                  <span className="block">
+                  <span className="block break-words">
                     {entry.start} <span aria-hidden="true">–</span> {entry.end}
                   </span>
                   {entry.current ? (
@@ -38,9 +38,9 @@ export function Experience({ section, index, entries }: ExperienceProps) {
                   ) : null}
                 </p>
 
-                <div>
-                  <h3 className="text-h3">{entry.role}</h3>
-                  <p className="mt-1.5 text-small text-ink-soft">
+                <div className="min-w-0">
+                  <h3 className="text-h3 break-words">{entry.role}</h3>
+                  <p className="mt-1.5 text-small text-ink-soft break-words">
                     {entry.organization}
                     {entry.location ? (
                       <>
@@ -53,7 +53,7 @@ export function Experience({ section, index, entries }: ExperienceProps) {
                   </p>
 
                   {entry.summary ? (
-                    <p className="mt-4 max-w-prose text-body text-ink-soft">
+                    <p className="mt-4 max-w-prose text-body text-ink-soft break-words">
                       {entry.summary}
                     </p>
                   ) : null}
@@ -63,13 +63,13 @@ export function Experience({ section, index, entries }: ExperienceProps) {
                       {entry.highlights.map((highlight, highlightIndex) => (
                         <li
                           key={highlightIndex}
-                          className="flex gap-3.5 text-small text-ink-soft"
+                          className="flex gap-3 text-small text-ink-soft"
                         >
                           <span
                             aria-hidden="true"
                             className="mt-[0.62rem] h-1 w-1 shrink-0 rounded-full bg-pen/70"
                           />
-                          <span>{highlight}</span>
+                          <span className="min-w-0 break-words">{highlight}</span>
                         </li>
                       ))}
                     </ul>
